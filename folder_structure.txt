@@ -1,0 +1,170 @@
+project-root/
+│
+├── prisma/                                 # Prisma Schema, Migrations & Seeds
+│   ├── schema.prisma
+│   ├── migrations/
+│   └── seed.ts                             
+│
+├── src/
+│   ├── main.ts                             # Entry point (NestFactory.create)
+│   ├── app.module.ts                       # Root Application Module
+│   │
+│   ├── bootstrap/                          # App Initialization & Setups
+│   │   ├── bootstrap.ts                    # Global pipes, filters, CORS, Helmet, Validation
+│   │   └── swagger.setup.ts                # Swagger UI & OpenAPI Configuration
+│   │
+│   ├── config/                             # Environment & App Configurations (Validated via Joi/Zod)
+│   │   ├── app.config.ts
+│   │   ├── database.config.ts              # Postgres/Prisma config
+│   │   ├── redis.config.ts
+│   │   ├── queue.config.ts                 # BullMQ config
+│   │   ├── storage.config.ts               # AWS S3 / MinIO / Local config
+│   │   ├── email.config.ts
+│   │   ├── auth.config.ts                  # Better Auth config
+│   │   └── websocket.config.ts
+│   │
+│   ├── shared/                             # Cross-Cutting Concerns (Framework-Agnostic)
+│   │   ├── constants/                      # App-wide constants
+│   │   ├── decorators/                     # @CurrentUser, @Public, @Roles, @ApiPagination
+│   │   ├── dtos/                           # Global DTOs (PaginationDto, ApiResponseDto)
+│   │   ├── enums/                          # Global Enums (UserRole, OrderStatus)
+│   │   ├── exceptions/                     # Custom Exceptions (BusinessException)
+│   │   ├── filters/                        # Global Exception Filters (AllExceptionsFilter)
+│   │   ├── guards/                         # AuthGuard, RolesGuard, ThrottlerGuard
+│   │   ├── interceptors/                   # LoggingInterceptor, TransformInterceptor, TimeoutInterceptor
+│   │   ├── interfaces/                     # Shared interfaces (IUserContext, IPaginatedResult)
+│   │   ├── pipes/                          # Custom Validation Pipes
+│   │   └── utils/                          # Helper functions (Date, String, Hashing, Crypto)
+│   │
+│   ├── infrastructure/                     # External Services & 3rd Party Adapters (Clean/Hexagonal Arch)
+│   │   ├── database/                       # Prisma / Postgres
+│   │   │   ├── prisma.module.ts
+│   │   │   ├── prisma.service.ts           # PrismaClient lifecycle management
+│   │   │   └── base.repository.ts          # Generic CRUD repository pattern
+│   │   │
+│   │   ├── cache/                          # Redis
+│   │   │   ├── redis.module.ts
+│   │   │   ├── redis.service.ts            # Redis Client wrapper
+│   │   │   └── cache-manager.service.ts    # Caching logic (Get/Set/Invalidate)
+│   │   │
+│   │   ├── queue/                          # BullMQ
+│   │   │   ├── queue.module.ts
+│   │   │   ├── queues/                     # Queue definitions & producers
+│   │   │   │   ├── email.queue.ts
+│   │   │   │   ├── notification.queue.ts
+│   │   │   │   └── payment.queue.ts
+│   │   │   └── processors/                 # BullMQ Workers/Processors
+│   │   │       ├── email.processor.ts
+│   │   │       ├── notification.processor.ts
+│   │   │       └── payment.processor.ts
+│   │   │
+│   │   ├── storage/                        # S3 / MinIO / Local Storage
+│   │   │   ├── storage.module.ts
+│   │   │   ├── storage.interface.ts        # StorageAdapter Interface
+│   │   │   ├── storage.service.ts          # Main service (delegates to active strategy)
+│   │   │   └── strategies/                 # Strategy Pattern for providers
+│   │   │       ├── aws-s3.strategy.ts
+│   │   │       ├── minio.strategy.ts
+│   │   │       └── local.strategy.ts
+│   │   │
+│   │   ├── email/                          # Nodemailer & EJS
+│   │   │   ├── email.module.ts
+│   │   │   ├── email.service.ts            # Transporter setup & send logic
+│   │   │   └── templates/                  # EJS templates for emails (.ejs)
+│   │   │       ├── welcome.ejs
+│   │   │       └── reset-password.ejs
+│   │   │
+│   │   ├── pdf/                            # PDF Generation (EJS + Puppeteer/Playwright)
+│   │   │   ├── pdf.module.ts
+│   │   │   ├── pdf.service.ts              # HTML to PDF conversion logic
+│   │   │   └── templates/                  # EJS templates for pages/invoices (.ejs)
+│   │   │       ├── invoice.ejs
+│   │   │       └── report.ejs
+│   │   │
+│   │   ├── websocket/                      # Socket.io
+│   │   │   ├── websocket.module.ts
+│   │   │   ├── redis.adapter.ts            # @socket.io/redis-adapter for scaling across instances
+│   │   │   └── events.gateway.ts           # Global WebSocket gateway
+│   │   │
+│   │   ├── auth-provider/                  # Better Auth Integration
+│   │   │   ├── better-auth.module.ts
+│   │   │   ├── better-auth.config.ts       # Better Auth instance setup
+│   │   │   └── better-auth.middleware.ts   # Exposes Better Auth handlers to NestJS routes
+│   │   │
+│   │   └── health/                         # Terminus Health Checks
+│   │       ├── health.module.ts
+│   │       └── health.controller.ts        # Pings DB, Redis, S3, Queue status
+│   │
+│   ├── modules/                            # Domain Modules (Bounded Contexts / Features - DDD)
+│   │   ├── auth/                           # Authentication Module (NestJS layer over Better Auth)
+│   │   │   ├── auth.module.ts
+│   │   │   ├── auth.controller.ts          # Routes mapping to Better Auth API
+│   │   │   ├── auth.service.ts
+│   │   │   └── dtos/
+│   │   │
+│   │   ├── users/                          # User Management
+│   │   │   ├── users.module.ts
+│   │   │   ├── users.controller.ts
+│   │   │   ├── users.service.ts            # Application/Use-case layer
+│   │   │   ├── users.repository.ts         # Data access layer (uses PrismaService)
+│   │   │   ├── entities/                   # Domain entities / Mappers
+│   │   │   └── dtos/                       # Request/Response DTOs (Class-validator)
+│   │   │
+│   │   ├── enterprise/                     # Example: ERP / CRM / LMS Domains (Sub-modules)
+│   │   │   ├── crm/                        # CRM Domain
+│   │   │   │   ├── leads/
+│   │   │   │   ├── contacts/
+│   │   │   │   └── deals/
+│   │   │   ├── lms/                        # LMS Domain
+│   │   │   │   ├── courses/
+│   │   │   │   └── enrollments/
+│   │   │   └── hrm/                        # HR Domain
+│   │   │       ├── employees/
+│   │   │       └── payroll/
+│   │   │
+│   │   ├── marketplace/                    # Marketplace / E-commerce Domain
+│   │   │   ├── products/
+│   │   │   ├── inventory/
+│   │   │   ├── orders/
+│   │   │   └── carts/
+│   │   │
+│   │   ├── social/                         # Social App Domain
+│   │   │   ├── posts/
+│   │   │   ├── comments/
+│   │   │   ├── feeds/
+│   │   │   └── realtime-notifications/     # Tied to Socket.io & BullMQ
+│   │   │
+│   │   ├── fintech/                        # Fintech / Ledger Domain
+│   │   │   ├── wallets/
+│   │   │   ├── transactions/
+│   │   │   └── payouts/
+│   │   │
+│   │   ├── ai/                             # AI App Domain
+│   │   │   ├── prompts/
+│   │   │   ├── agents/
+│   │   │   └── completions/
+│   │   │
+│   │   └── admin/                          # Super Admin / Tenant Admin Features
+│   │       ├── admin.module.ts
+│   │       ├── admin.controller.ts
+│   │       └── admin.service.ts
+│   │
+│   └── docs/                               # Documentation
+│       ├── api/                            # OpenAPI/Swagger JSON files
+│       └── architecture.md                 # Architecture decision records (ADR)
+│
+├── test/                                   # E2E and Integration tests
+│   ├── e2e/
+│   └── integration/
+│
+├── scripts/                                # Bash/Node scripts (cron jobs, backups, CI/CD)
+│
+├── .env.example
+├── .eslintrc.js
+├── .prettierrc
+├── nest-cli.json
+├── package.json
+├── tsconfig.json
+├── tsconfig.build.json
+├── docker-compose.yml                      # Local dev setup (Postgres, Redis, MinIO, Mailhog)
+└── Dockerfile                              # Production containerization
