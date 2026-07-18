@@ -8,8 +8,7 @@ import { Request } from 'express';
 @Injectable()
 export class BetterAuthService {
   private readonly logger = new Logger(BetterAuthService.name);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public readonly auth: any;
+  public readonly auth: ReturnType<typeof betterAuth>;
 
   constructor(
     private readonly configService: ConfigService,
@@ -38,7 +37,7 @@ export class BetterAuthService {
       //     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       //   }
       // }
-    });
+    }) as ReturnType<typeof betterAuth>;
 
     this.logger.log('BetterAuth configured successfully');
   }

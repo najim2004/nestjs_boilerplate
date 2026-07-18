@@ -5,7 +5,12 @@ import {
   ForbiddenException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { CaslAbilityFactory } from '@/infrastructure/casl/casl-ability.factory.js';
+import { Request } from 'express';
+import {
+  AppAbility,
+  CaslAbilityFactory,
+} from '@/infrastructure/casl/casl-ability.factory.js';
+import { IUserContext } from '@/shared/interfaces/user-context.interface.js';
 import {
   CHECK_ABILITY,
   RequiredRule,
@@ -27,21 +32,20 @@ export class AbilitiesGuard implements CanActivate {
       return true;
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const request = context.switchToHttp().getRequest();
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+    const request = context
+      .switchToHttp()
+      .getRequest<Request & { user?: IUserContext }>();
     const user = request.user;
 
     if (!user) {
       throw new ForbiddenException('User is not authenticated');
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const ability = this.caslAbilityFactory.createForUser(user);
 
     for (const rule of rules) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
-      if (!ability.can(rule.action, rule.subject as any)) {
+      const subject = rule.subject as Parameters<AppAbility['can']>[1];
+      if (!ability.can(rule.action, subject)) {
         throw new ForbiddenException(
           `You are not allowed to ${rule.action} this resource`,
         );

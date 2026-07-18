@@ -9,10 +9,7 @@ export class PaymentService {
 
   constructor(private configService: ConfigService) {
     const secretKey = this.configService.get<string>('payment.stripeSecretKey');
-    this.stripe = new Stripe(secretKey || '', {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any
-      apiVersion: '2025-02-24.acacia' as any,
-    });
+    this.stripe = new Stripe(secretKey || '');
   }
 
   async createPaymentIntent(amount: number, currency = 'usd') {

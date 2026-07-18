@@ -6,8 +6,7 @@ import { User } from '../../../prisma/generated/client.js';
 @Injectable()
 export class UserRepository extends BaseRepository<User> {
   constructor(prisma: PrismaService) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
-    super(prisma, prisma.user as any);
+    super(prisma, prisma.user as unknown as BaseRepository<User>['modelDelegate']);
   }
 
   async findByEmail(email: string): Promise<User | null> {

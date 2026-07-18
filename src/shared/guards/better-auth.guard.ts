@@ -33,25 +33,21 @@ export class BetterAuthGuard implements CanActivate {
     const request = context.switchToHttp().getRequest<Request>();
 
     try {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const session = await this.betterAuthService.getSession(request);
+      const sessionUser = session?.user as
+        | (IUserContext & { role?: string })
+        | undefined;
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      if (!session?.user) {
+      if (!sessionUser) {
         throw new UnauthorizedException('Not authenticated');
       }
 
       // Attach user to request
       (request as Request & { user: IUserContext }).user = {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-        id: session.user.id,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-        email: session.user.email,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-        name: session.user.name,
-        role:
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-          ((session.user as Record<string, unknown>).role as string) ?? 'user',
+        id: sessionUser.id,
+        email: sessionUser.email,
+        name: sessionUser.name,
+        role: sessionUser.role ?? 'user',
       };
 
       return true;
