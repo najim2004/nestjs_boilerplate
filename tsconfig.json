@@ -18,8 +18,7 @@
     "strictBindCallApply": true,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@/*": ["./src/*"],
-      "@prisma/client": ["./prisma/generated/client"]
+      "@/*": ["./src/*"]
     },
     "types": ["jest", "node"]
   }

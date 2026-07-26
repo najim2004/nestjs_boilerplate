@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { AbilityBuilder, MongoAbility } from '@casl/ability';
 import { createPrismaAbility, PrismaQuery, Subjects } from '@casl/prisma';
-import { User } from '@prisma/client';
+import { User } from '../../../prisma/generated/client';
 
 export enum Action {
   Manage = 'manage',

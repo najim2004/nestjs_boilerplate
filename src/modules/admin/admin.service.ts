@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { UserRepository } from '../users/user.repository';
 import { PaginationDto } from '@/shared/dtos/pagination.dto';
 import { IPaginatedResult } from '@/shared/interfaces/paginated-result.interface';
-import { User } from '@prisma/client';
+import { User } from '../../../prisma/generated/client';
 
 @Injectable()
 export class AdminService {
