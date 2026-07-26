@@ -12,7 +12,10 @@ export class PaymentService {
     this.stripe = new Stripe(secretKey || '');
   }
 
-  async createPaymentIntent(amount: number, currency = 'usd') {
+  async createPaymentIntent(
+    amount: number,
+    currency = 'usd',
+  ): Promise<Stripe.Response<Stripe.PaymentIntent>> {
     try {
       const paymentIntent = await this.stripe.paymentIntents.create({
         amount,
@@ -25,7 +28,10 @@ export class PaymentService {
     }
   }
 
-  constructWebhookEvent(payload: string | Buffer, signature: string) {
+  constructWebhookEvent(
+    payload: string | Buffer,
+    signature: string,
+  ): Stripe.Event {
     const webhookSecret = this.configService.get<string>(
       'payment.stripeWebhookSecret',
     );

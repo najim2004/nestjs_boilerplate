@@ -1,3 +1,5 @@
+import 'multer';
+
 export interface IStorageAdapter {
   uploadFile(file: Express.Multer.File, directory?: string): Promise<string>;
   deleteFile(url: string): Promise<void>;

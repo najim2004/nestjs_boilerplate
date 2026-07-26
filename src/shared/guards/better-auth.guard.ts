@@ -35,8 +35,7 @@ export class BetterAuthGuard implements CanActivate {
     try {
       const session = await this.betterAuthService.getSession(request);
       const sessionUser = session?.user as
-        | (IUserContext & { role?: string })
-        | undefined;
+        (IUserContext & { role?: string }) | undefined;
 
       if (!sessionUser) {
         throw new UnauthorizedException('Not authenticated');

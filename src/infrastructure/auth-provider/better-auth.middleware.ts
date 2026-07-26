@@ -9,7 +9,6 @@ export class BetterAuthMiddleware implements NestMiddleware {
 
   use(req: Request, res: Response, next: NextFunction) {
     if (req.path.startsWith('/api/auth')) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       const handler = toNodeHandler(this.betterAuthService.auth);
       return handler(req, res);
     }
