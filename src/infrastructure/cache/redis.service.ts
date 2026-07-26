@@ -5,7 +5,7 @@ import {
   OnModuleDestroy,
   Logger,
 } from '@nestjs/common';
-import Redis from 'ioredis';
+import { Redis } from 'ioredis';
 
 interface RedisOptions {
   host: string;

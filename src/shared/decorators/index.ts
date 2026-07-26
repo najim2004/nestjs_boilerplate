@@ -1,4 +1,4 @@
-export { CurrentUser } from './current-user.decorator.js';
-export { Public, IS_PUBLIC_KEY } from './public.decorator.js';
-export { Roles } from './roles.decorator.js';
-export { ApiPagination } from './api-pagination.decorator.js';
+export { CurrentUser } from './current-user.decorator';
+export { Public, IS_PUBLIC_KEY } from './public.decorator';
+export { Roles } from './roles.decorator';
+export { ApiPagination } from './api-pagination.decorator';

@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { BullModule } from '@nestjs/bullmq';
 import { ConfigService } from '@nestjs/config';
-import { APP_CONSTANTS } from '@/shared/constants/app.constants.js';
-import { EmailQueueService } from './queues/email.queue.js';
-import { NotificationQueueService } from './queues/notification.queue.js';
-import { EmailProcessor } from './processors/email.processor.js';
-import { NotificationProcessor } from './processors/notification.processor.js';
+import { APP_CONSTANTS } from '@/shared/constants/app.constants';
+import { EmailQueueService } from './queues/email.queue';
+import { NotificationQueueService } from './queues/notification.queue';
+import { EmailProcessor } from './processors/email.processor';
+import { NotificationProcessor } from './processors/notification.processor';
 
 @Module({
   imports: [

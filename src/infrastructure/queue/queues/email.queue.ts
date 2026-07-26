@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectQueue } from '@nestjs/bullmq';
 import { Queue } from 'bullmq';
-import { APP_CONSTANTS } from '@/shared/constants/app.constants.js';
+import { APP_CONSTANTS } from '@/shared/constants/app.constants';
 
 export interface ISendEmailData {
   to: string;

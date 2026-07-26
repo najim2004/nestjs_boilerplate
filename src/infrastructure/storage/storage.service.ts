@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { IStorageAdapter } from './storage.interface.js';
-import { LocalStorageStrategy } from './strategies/local.strategy.js';
+import { IStorageAdapter } from './storage.interface';
+import { LocalStorageStrategy } from './strategies/local.strategy';
 
 @Injectable()
 export class StorageService {

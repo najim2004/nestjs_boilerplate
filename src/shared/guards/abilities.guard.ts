@@ -9,12 +9,12 @@ import { Request } from 'express';
 import {
   AppAbility,
   CaslAbilityFactory,
-} from '@/infrastructure/casl/casl-ability.factory.js';
-import { IUserContext } from '@/shared/interfaces/user-context.interface.js';
+} from '@/infrastructure/casl/casl-ability.factory';
+import { IUserContext } from '@/shared/interfaces/user-context.interface';
 import {
   CHECK_ABILITY,
   RequiredRule,
-} from '../decorators/check-abilities.decorator.js';
+} from '../decorators/check-abilities.decorator';
 
 @Injectable()
 export class AbilitiesGuard implements CanActivate {

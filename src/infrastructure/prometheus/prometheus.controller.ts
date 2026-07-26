@@ -1,7 +1,7 @@
 import { Controller, Get, Res } from '@nestjs/common';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { PrometheusController as NestPrometheusController } from '@willsoto/nestjs-prometheus';
-import { Public } from '@/shared/decorators/public.decorator.js';
+import { Public } from '@/shared/decorators/public.decorator';
 import type { Response } from 'express';
 
 @ApiTags('metrics')

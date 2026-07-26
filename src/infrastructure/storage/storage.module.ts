@@ -1,6 +1,6 @@
 import { Global, Module } from '@nestjs/common';
-import { StorageService } from './storage.service.js';
-import { LocalStorageStrategy } from './strategies/local.strategy.js';
+import { StorageService } from './storage.service';
+import { LocalStorageStrategy } from './strategies/local.strategy';
 
 @Global()
 @Module({

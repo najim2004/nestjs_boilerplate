@@ -7,9 +7,9 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
-import { IS_PUBLIC_KEY } from '@/shared/decorators/public.decorator.js';
-import { BetterAuthService } from '@/infrastructure/auth-provider/better-auth.config.js';
-import { IUserContext } from '@/shared/interfaces/user-context.interface.js';
+import { IS_PUBLIC_KEY } from '@/shared/decorators/public.decorator';
+import { BetterAuthService } from '@/infrastructure/auth-provider/better-auth.config';
+import { IUserContext } from '@/shared/interfaces/user-context.interface';
 
 @Injectable()
 export class BetterAuthGuard implements CanActivate {

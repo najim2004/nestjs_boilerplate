@@ -2,7 +2,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { ValidationPipe } from '@nestjs/common';
 import helmet from 'helmet';
 import { join } from 'path';
-import { AllExceptionsFilter } from '@/shared/filters/all-exceptions.filter.js';
+import { AllExceptionsFilter } from '@/shared/filters/all-exceptions.filter';
 
 export function bootstrap(app: NestExpressApplication): void {
   // Global prefix

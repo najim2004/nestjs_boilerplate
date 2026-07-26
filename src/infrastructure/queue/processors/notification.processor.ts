@@ -1,8 +1,8 @@
 import { Processor, WorkerHost, OnWorkerEvent } from '@nestjs/bullmq';
 import { Logger } from '@nestjs/common';
 import { Job } from 'bullmq';
-import { APP_CONSTANTS } from '@/shared/constants/app.constants.js';
-import { ISendNotificationData } from '../queues/notification.queue.js';
+import { APP_CONSTANTS } from '@/shared/constants/app.constants';
+import { ISendNotificationData } from '../queues/notification.queue';
 
 @Processor(APP_CONSTANTS.QUEUE.NOTIFICATION)
 export class NotificationProcessor extends WorkerHost {

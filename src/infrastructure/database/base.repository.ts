@@ -1,5 +1,5 @@
-import { PrismaService } from './prisma.service.js';
-import { IPaginatedResult } from '@/shared/interfaces/paginated-result.interface.js';
+import { PrismaService } from './prisma.service';
+import { IPaginatedResult } from '@/shared/interfaces/paginated-result.interface';
 
 type ModelDelegate<T> = {
   findMany: (args: Record<string, unknown>) => Promise<T[]>;

@@ -5,8 +5,8 @@ import {
   ForbiddenException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { ROLES_KEY } from '@/shared/decorators/roles.decorator.js';
-import { IUserContext } from '@/shared/interfaces/user-context.interface.js';
+import { ROLES_KEY } from '@/shared/decorators/roles.decorator';
+import { IUserContext } from '@/shared/interfaces/user-context.interface';
 import { Request } from 'express';
 
 @Injectable()

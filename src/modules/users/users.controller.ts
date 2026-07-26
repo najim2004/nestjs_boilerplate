@@ -1,10 +1,10 @@
 import { Controller, Get, Put, Body, UseInterceptors } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
-import { UsersService } from './users.service.js';
-import { CurrentUser } from '@/shared/decorators/current-user.decorator.js';
-import type { IUserContext } from '@/shared/interfaces/user-context.interface.js';
-import { UpdateUserDto } from './dtos/update-user.dto.js';
-import { TransformInterceptor } from '@/shared/interceptors/transform.interceptor.js';
+import { UsersService } from './users.service';
+import { CurrentUser } from '@/shared/decorators/current-user.decorator';
+import type { IUserContext } from '@/shared/interfaces/user-context.interface';
+import { UpdateUserDto } from './dtos/update-user.dto';
+import { TransformInterceptor } from '@/shared/interceptors/transform.interceptor';
 
 @ApiTags('users')
 @Controller('users')

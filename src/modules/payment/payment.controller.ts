@@ -1,8 +1,8 @@
 import { Controller, Post, Body, Req, Headers } from '@nestjs/common';
 import type { RawBodyRequest } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
-import { PaymentService } from './payment.service.js';
-import { Public } from '@/shared/decorators/public.decorator.js';
+import { PaymentService } from './payment.service';
+import { Public } from '@/shared/decorators/public.decorator';
 import { Request } from 'express';
 
 @ApiTags('payment')

@@ -1,8 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { AppModule } from './app.module.js';
-import { bootstrap } from './bootstrap/bootstrap.js';
-import { setupSwagger } from './bootstrap/swagger.setup.js';
+import { AppModule } from './app.module';
+import { bootstrap } from './bootstrap/bootstrap';
+import { setupSwagger } from './bootstrap/swagger.setup';
 
 async function start(): Promise<void> {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {

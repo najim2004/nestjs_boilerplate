@@ -5,7 +5,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { PrismaPg } from '@prisma/adapter-pg';
-import { PrismaClient } from '../../../prisma/generated/client.js';
+import { PrismaClient } from '../../../prisma/generated/client';
 
 @Injectable()
 export class PrismaService

@@ -1,5 +1,5 @@
 import { Global, Module } from '@nestjs/common';
-import { BetterAuthService } from './better-auth.config.js';
+import { BetterAuthService } from './better-auth.config';
 
 @Global()
 @Module({

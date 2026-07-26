@@ -7,10 +7,10 @@ import {
   MicroserviceHealthIndicator,
   HealthCheckResult,
 } from '@nestjs/terminus';
-import { PrismaService } from '../database/prisma.service.js';
+import { PrismaService } from '../database/prisma.service';
 import { RedisOptions, Transport } from '@nestjs/microservices';
 import { ConfigService } from '@nestjs/config';
-import { Public } from '@/shared/decorators/public.decorator.js';
+import { Public } from '@/shared/decorators/public.decorator';
 
 @ApiTags('health')
 @Controller('health')

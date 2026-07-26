@@ -3,44 +3,44 @@ import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 
 // Configurations
-import appConfig from './config/app.config.js';
-import databaseConfig from './config/database.config.js';
-import redisConfig from './config/redis.config.js';
-import queueConfig from './config/queue.config.js';
-import emailConfig from './config/email.config.js';
-import authConfig from './config/auth.config.js';
-import websocketConfig from './config/websocket.config.js';
-import storageConfig from './config/storage.config.js';
-import throttlerConfig from './config/throttler.config.js';
-import paymentConfig from './config/payment.config.js';
+import appConfig from './config/app.config';
+import databaseConfig from './config/database.config';
+import redisConfig from './config/redis.config';
+import queueConfig from './config/queue.config';
+import emailConfig from './config/email.config';
+import authConfig from './config/auth.config';
+import websocketConfig from './config/websocket.config';
+import storageConfig from './config/storage.config';
+import throttlerConfig from './config/throttler.config';
+import paymentConfig from './config/payment.config';
 
 // Infrastructure
-import { PrismaModule } from './infrastructure/database/prisma.module.js';
-import { RedisModule } from './infrastructure/cache/redis.module.js';
-import { QueueModule } from './infrastructure/queue/queue.module.js';
-import { EmailModule } from './infrastructure/email/email.module.js';
-import { WebsocketModule } from './infrastructure/websocket/websocket.module.js';
-import { BetterAuthModule } from './infrastructure/auth-provider/better-auth.module.js';
-import { HealthModule } from './infrastructure/health/health.module.js';
-import { StorageModule } from './infrastructure/storage/storage.module.js';
-import { PrometheusModule } from './infrastructure/prometheus/prometheus.module.js';
-import { CaslModule } from './infrastructure/casl/casl.module.js';
-import { CommandsModule } from './infrastructure/commands/commands.module.js';
+import { PrismaModule } from './infrastructure/database/prisma.module';
+import { RedisModule } from './infrastructure/cache/redis.module';
+import { QueueModule } from './infrastructure/queue/queue.module';
+import { EmailModule } from './infrastructure/email/email.module';
+import { WebsocketModule } from './infrastructure/websocket/websocket.module';
+import { BetterAuthModule } from './infrastructure/auth-provider/better-auth.module';
+import { HealthModule } from './infrastructure/health/health.module';
+import { StorageModule } from './infrastructure/storage/storage.module';
+import { PrometheusModule } from './infrastructure/prometheus/prometheus.module';
+import { CaslModule } from './infrastructure/casl/casl.module';
+import { CommandsModule } from './infrastructure/commands/commands.module';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { ConfigService } from '@nestjs/config';
 // Middlewares & Guards & Interceptors
-import { BetterAuthMiddleware } from './infrastructure/auth-provider/better-auth.middleware.js';
-import { BetterAuthGuard } from './shared/guards/better-auth.guard.js';
-import { AbilitiesGuard } from './shared/guards/abilities.guard.js';
+import { BetterAuthMiddleware } from './infrastructure/auth-provider/better-auth.middleware';
+import { BetterAuthGuard } from './shared/guards/better-auth.guard';
+import { AbilitiesGuard } from './shared/guards/abilities.guard';
 import { ThrottlerGuard } from '@nestjs/throttler';
-import { LoggingInterceptor } from './shared/interceptors/logging.interceptor.js';
-import { TimeoutInterceptor } from './shared/interceptors/timeout.interceptor.js';
+import { LoggingInterceptor } from './shared/interceptors/logging.interceptor';
+import { TimeoutInterceptor } from './shared/interceptors/timeout.interceptor';
 
 // Domains
-import { AuthModule } from './modules/auth/auth.module.js';
-import { UsersModule } from './modules/users/users.module.js';
-import { AdminModule } from './modules/admin/admin.module.js';
-import { PaymentModule } from './modules/payment/payment.module.js';
+import { AuthModule } from './modules/auth/auth.module';
+import { UsersModule } from './modules/users/users.module';
+import { AdminModule } from './modules/admin/admin.module';
+import { PaymentModule } from './modules/payment/payment.module';
 
 @Module({
   imports: [

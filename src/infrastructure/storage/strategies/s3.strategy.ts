@@ -1,4 +1,4 @@
-import type { IStorageAdapter } from '../storage.interface.js';
+import type { IStorageAdapter } from '../storage.interface';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { ConfigService } from '@nestjs/config';
 

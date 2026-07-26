@@ -1,9 +1,9 @@
 import { Processor, WorkerHost, OnWorkerEvent } from '@nestjs/bullmq';
 import { Logger } from '@nestjs/common';
 import { Job } from 'bullmq';
-import { APP_CONSTANTS } from '@/shared/constants/app.constants.js';
-import { EmailService } from '@/infrastructure/email/email.service.js';
-import { ISendEmailData } from '../queues/email.queue.js';
+import { APP_CONSTANTS } from '@/shared/constants/app.constants';
+import { EmailService } from '@/infrastructure/email/email.service';
+import { ISendEmailData } from '../queues/email.queue';
 
 @Processor(APP_CONSTANTS.QUEUE.EMAIL)
 export class EmailProcessor extends WorkerHost {

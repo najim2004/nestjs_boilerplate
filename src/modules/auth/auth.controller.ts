@@ -1,7 +1,7 @@
 import { Controller, Post, Body } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { Public } from '@/shared/decorators/public.decorator.js';
-import { SignUpDto, SignInDto } from './dtos/auth.dto.js';
+import { Public } from '@/shared/decorators/public.decorator';
+import { SignUpDto, SignInDto } from './dtos/auth.dto';
 
 @ApiTags('auth')
 @Controller('auth')

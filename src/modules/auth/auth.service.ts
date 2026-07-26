@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { BetterAuthService } from '@/infrastructure/auth-provider/better-auth.config.js';
+import { BetterAuthService } from '@/infrastructure/auth-provider/better-auth.config';
 
 @Injectable()
 export class AuthService {

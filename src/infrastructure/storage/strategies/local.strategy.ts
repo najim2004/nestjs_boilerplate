@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import * as fs from 'fs/promises';
 import * as path from 'path';
-import { IStorageAdapter } from '../storage.interface.js';
+import { IStorageAdapter } from '../storage.interface';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()

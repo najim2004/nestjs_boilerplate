@@ -1,6 +1,9 @@
 import { PrismaClient } from './generated/client';
+import { PrismaPg } from '@prisma/adapter-pg';
 
-const prisma = new (PrismaClient as any)();
+const connectionString = process.env.DATABASE_URL || '';
+const adapter = new PrismaPg({ connectionString });
+const prisma = new PrismaClient({ adapter });
 
 async function main(): Promise<void> {
   console.log('🌱 Starting seed...');

@@ -45,16 +45,14 @@ export class EmailService {
 
       const defaultFrom = `"${this.configService.get<string>('email.fromName')}" <${this.configService.get<string>('email.fromAddress')}>`;
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const info = await this.transporter.sendMail({
+      const info = (await this.transporter.sendMail({
         from: options.from || defaultFrom,
         to: options.to,
         subject: options.subject,
         html,
-      });
+      })) as { messageId?: string };
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      this.logger.log(`Email sent: ${info.messageId}`);
+      this.logger.log(`Email sent: ${info.messageId || ''}`);
     } catch (error) {
       const recipient = Array.isArray(options.to)
         ? options.to.join(', ')
