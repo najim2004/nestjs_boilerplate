@@ -4,6 +4,8 @@ import {
   Injectable,
   NestInterceptor,
   RequestTimeoutException,
+  Optional,
+  Inject,
 } from '@nestjs/common';
 import {
   Observable,
@@ -17,7 +19,7 @@ import {
 export class TimeoutInterceptor implements NestInterceptor {
   private readonly timeoutMs: number;
 
-  constructor(timeoutMs = 30000) {
+  constructor(@Optional() @Inject('TIMEOUT_MS') timeoutMs = 30000) {
     this.timeoutMs = timeoutMs;
   }
 
