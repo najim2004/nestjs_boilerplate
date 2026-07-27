@@ -1,6 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '@/infrastructure/database/prisma.service';
-import { Contact, Faq } from '../../../prisma/generated/client';
+import {
+  ContactModel as Contact,
+  FaqModel as Faq,
+} from '../../../prisma/generated/models';
 import {
   CreateApplicationContactDto,
   ApplicationContactResponseDto,

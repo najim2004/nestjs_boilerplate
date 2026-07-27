@@ -17,7 +17,7 @@ import {
   ChatUserDirectoryResponseDto,
 } from './dtos/chat-user.dto';
 import { ApiResponseDto } from '@/shared/dtos/api-response.dto';
-import { MessageStatus } from '../../../prisma/generated/client';
+import { MessageStatus } from '../../../prisma/generated/enums';
 
 @Injectable()
 export class ChatService {
