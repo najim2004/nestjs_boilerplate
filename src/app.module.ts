@@ -41,6 +41,8 @@ import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { AdminModule } from './modules/admin/admin.module';
 import { PaymentModule } from './modules/payment/payment.module';
+import { ApplicationModule } from './modules/application/application.module';
+import { ChatModule } from './modules/chat/chat.module';
 
 @Module({
   imports: [
@@ -90,6 +92,8 @@ import { PaymentModule } from './modules/payment/payment.module';
     UsersModule,
     AdminModule,
     PaymentModule,
+    ApplicationModule,
+    ChatModule,
   ],
   providers: [
     {

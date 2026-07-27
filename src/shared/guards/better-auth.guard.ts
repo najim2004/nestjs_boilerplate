@@ -44,6 +44,7 @@ export class BetterAuthGuard implements CanActivate {
       // Attach user to request
       (request as Request & { user: IUserContext }).user = {
         id: sessionUser.id,
+        userId: sessionUser.id,
         email: sessionUser.email,
         name: sessionUser.name,
         role: sessionUser.role ?? 'user',

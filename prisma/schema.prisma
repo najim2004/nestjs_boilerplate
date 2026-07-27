@@ -1,5 +1,5 @@
 // Prisma Schema for NestJS Boilerplate
-// BetterAuth compatible tables + application models
+// BetterAuth compatible tables + application models (camelCase in TypeScript, snake_case in DB)
 
 generator client {
   provider = "prisma-client"
@@ -18,31 +18,67 @@ model User {
   id            String    @id @default(cuid())
   name          String
   email         String    @unique
-  emailVerified Boolean   @default(false)
+  emailVerified Boolean   @default(false) @map("email_verified")
   image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  deletedAt     DateTime?
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+  deletedAt     DateTime? @map("deleted_at")
 
   role String @default("user")
+
+  // Additional fields from old_nestjs (camelCase in TS, @map to snake_case in DB)
+  firstName          String?   @map("first_name")
+  lastName           String?   @map("last_name")
+  username           String?   @unique
+  password           String?
+  domain             String?   @unique
+  phoneNumber        String?   @map("phone_number")
+  country            String?
+  state              String?
+  city               String?
+  address            String?
+  zipCode            String?   @map("zip_code")
+  gender             String?
+  dateOfBirth        DateTime? @map("date_of_birth")
+  billingId          String?   @map("billing_id")
+  type               String?   @default("user")
+  status             Int?      @default(1)
+  approvedAt         DateTime? @map("approved_at")
+  availability       String?
+  isTwoFactorEnabled Int?      @default(0) @map("is_two_factor_enabled")
+  twoFactorSecret    String?   @map("two_factor_secret")
 
   // BetterAuth relations
   sessions Session[]
   accounts Account[]
+
+  // Relations from old_nestjs
+  creatorConversations     Conversation[]       @relation("creator")
+  participantConversations Conversation[]       @relation("participant")
+  receiverMessages         Message[]            @relation("receiver")
+  senderMessages           Message[]            @relation("sender")
+  receiverNotifications    Notification[]       @relation("receiver")
+  senderNotifications      Notification[]       @relation("sender")
+  userPaymentMethods       UserPaymentMethod[]
+  userSettings             UserSetting[]
+  ucodes                   Ucode[]
+  roles                    Role[]
+  roleUsers                RoleUser[]
+  paymentTransactions      PaymentTransaction[]
 
   @@map("users")
 }
 
 model Session {
   id        String   @id @default(cuid())
-  expiresAt DateTime
+  expiresAt DateTime @map("expires_at")
   token     String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  ipAddress String?
-  userAgent String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  ipAddress String?  @map("ip_address")
+  userAgent String?  @map("user_agent")
 
-  userId String
+  userId String @map("user_id")
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("sessions")
@@ -50,19 +86,19 @@ model Session {
 
 model Account {
   id                    String    @id @default(cuid())
-  accountId             String
-  providerId            String
-  userId                String
+  accountId             String    @map("account_id")
+  providerId            String    @map("provider_id")
+  userId                String    @map("user_id")
   user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  accessToken           String?
-  refreshToken          String?
-  idToken               String?
-  accessTokenExpiresAt  DateTime?
-  refreshTokenExpiresAt DateTime?
+  accessToken           String?   @map("access_token")
+  refreshToken          String?   @map("refresh_token")
+  idToken               String?   @map("id_token")
+  accessTokenExpiresAt  DateTime? @map("access_token_expires_at")
+  refreshTokenExpiresAt DateTime? @map("refresh_token_expires_at")
   scope                 String?
   password              String?
-  createdAt             DateTime  @default(now())
-  updatedAt             DateTime  @updatedAt
+  createdAt             DateTime  @default(now()) @map("created_at")
+  updatedAt             DateTime  @updatedAt @map("updated_at")
 
   @@map("accounts")
 }
@@ -71,9 +107,300 @@ model Verification {
   id         String    @id @default(cuid())
   identifier String
   value      String
-  expiresAt  DateTime
-  createdAt  DateTime? @default(now())
-  updatedAt  DateTime? @updatedAt
+  expiresAt  DateTime  @map("expires_at")
+  createdAt  DateTime? @default(now()) @map("created_at")
+  updatedAt  DateTime? @updatedAt @map("updated_at")
 
   @@map("verifications")
+}
+
+// ============================================================
+// Application & Domain Models (Migrated from old_nestjs)
+// ============================================================
+
+model Ucode {
+  id        String    @id @default(cuid())
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @map("updated_at")
+  status    Int?      @default(1)
+  userId    String?   @map("user_id")
+  user      User?     @relation(fields: [userId], references: [id])
+  token     String?
+  email     String?
+  expiredAt DateTime? @map("expired_at")
+
+  @@map("ucodes")
+}
+
+model Role {
+  id        String    @id @default(cuid())
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  status    Int?      @default(1)
+  title     String?
+  name      String?
+  userId    String?   @map("user_id")
+  user      User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  permissionRoles PermissionRole[]
+  roleUsers       RoleUser[]
+  permissions     Permission[]     @relation("PermissionToRole")
+
+  @@map("roles")
+}
+
+model Permission {
+  id         String    @id @default(cuid())
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @default(now()) @map("updated_at")
+  deletedAt  DateTime? @map("deleted_at")
+  status     Int?      @default(1)
+  title      String?
+  action     String?
+  subject    String?
+  conditions String?
+  fields     String?
+
+  permissionRoles PermissionRole[]
+  roles           Role[]           @relation("PermissionToRole")
+
+  @@map("permissions")
+}
+
+model PermissionRole {
+  createdAt    DateTime   @default(now()) @map("created_at")
+  updatedAt    DateTime   @default(now()) @map("updated_at")
+  permissionId String     @map("permission_id")
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+  roleId       String     @map("role_id")
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@id([permissionId, roleId])
+  @@map("permission_roles")
+}
+
+model RoleUser {
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+  roleId    String   @map("role_id")
+  role      Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  userId    String   @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([roleId, userId])
+  @@map("role_users")
+}
+
+model NotificationEvent {
+  id        String    @id @default(cuid())
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  status    Int?      @default(1)
+  type      String?
+  text      String?
+
+  notifications Notification[]
+
+  @@map("notification_events")
+}
+
+model Notification {
+  id                  String             @id @default(cuid())
+  createdAt           DateTime           @default(now()) @map("created_at")
+  updatedAt           DateTime           @default(now()) @map("updated_at")
+  deletedAt           DateTime?          @map("deleted_at")
+  readAt              DateTime?          @map("read_at")
+  status              Int?               @default(1)
+  senderId            String?            @map("sender_id")
+  sender              User?              @relation("sender", fields: [senderId], references: [id])
+  receiverId          String?            @map("receiver_id")
+  receiver            User?              @relation("receiver", fields: [receiverId], references: [id])
+  notificationEventId String?            @map("notification_event_id")
+  notificationEvent   NotificationEvent? @relation(fields: [notificationEventId], references: [id])
+  entityId            String?            @map("entity_id")
+
+  @@map("notifications")
+}
+
+model UserPaymentMethod {
+  id              String    @id @default(cuid())
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @default(now()) @map("updated_at")
+  deletedAt       DateTime? @map("deleted_at")
+  userId          String?   @map("user_id")
+  user            User?     @relation(fields: [userId], references: [id])
+  paymentMethodId String?   @map("payment_method_id")
+  checkoutId      String?   @map("checkout_id")
+
+  @@map("user_payment_methods")
+}
+
+model PaymentTransaction {
+  id              String    @id @default(cuid())
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @default(now()) @map("updated_at")
+  deletedAt       DateTime? @map("deleted_at")
+  storeId         String?   @map("store_id")
+  userId          String?   @map("user_id")
+  user            User?     @relation(fields: [userId], references: [id])
+  orderId         String?   @map("order_id")
+  type            String?   @default("order")
+  withdrawVia     String?   @default("wallet") @map("withdraw_via")
+  provider        String?
+  referenceNumber String?   @map("reference_number")
+  status          String?   @default("pending")
+  rawStatus       String?   @map("raw_status")
+  amount          Decimal?
+  currency        String?
+  paidAmount      Decimal?  @map("paid_amount")
+  paidCurrency    String?   @map("paid_currency")
+
+  @@map("payment_transactions")
+}
+
+enum MessageStatus {
+  PENDING
+  SENT
+  DELIVERED
+  READ
+}
+
+model Message {
+  id             String         @id @default(cuid())
+  createdAt      DateTime       @default(now()) @map("created_at")
+  updatedAt      DateTime       @default(now()) @map("updated_at")
+  deletedAt      DateTime?      @map("deleted_at")
+  status         MessageStatus? @default(PENDING)
+  senderId       String?        @map("sender_id")
+  sender         User?          @relation("sender", fields: [senderId], references: [id])
+  receiverId     String?        @map("receiver_id")
+  receiver       User?          @relation("receiver", fields: [receiverId], references: [id])
+  conversationId String?        @map("conversation_id")
+  conversation   Conversation?  @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  attachmentId   String?        @map("attachment_id")
+  attachment     Attachment?    @relation(fields: [attachmentId], references: [id])
+  message        String?
+
+  @@map("messages")
+}
+
+model Attachment {
+  id        String    @id @default(cuid())
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  name      String?
+  type      String?
+  size      Int?
+  file      String?
+  fileAlt   String?   @map("file_alt")
+
+  messages Message[]
+
+  @@map("attachments")
+}
+
+model Conversation {
+  id            String    @id @default(cuid())
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @default(now()) @map("updated_at")
+  deletedAt     DateTime? @map("deleted_at")
+  creatorId     String?   @map("creator_id")
+  creator       User?     @relation("creator", fields: [creatorId], references: [id])
+  participantId String?   @map("participant_id")
+  participant   User?     @relation("participant", fields: [participantId], references: [id])
+
+  messages Message[]
+
+  @@map("conversations")
+}
+
+model Faq {
+  id        String    @id @default(cuid())
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  status    Int?      @default(1)
+  sortOrder Int?      @default(0) @map("sort_order")
+  question  String?
+  answer    String?
+
+  @@map("faqs")
+}
+
+model Contact {
+  id          String    @id @default(cuid())
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @default(now()) @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+  firstName   String?   @map("first_name")
+  lastName    String?   @map("last_name")
+  email       String?
+  phoneNumber String?   @map("phone_number")
+  message     String?
+
+  @@map("contacts")
+}
+
+model SocialMedia {
+  id        String    @id @default(cuid())
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  status    Int?      @default(1)
+  sortOrder Int?      @default(0) @map("sort_order")
+  name      String?
+  url       String?
+  icon      String?
+
+  @@map("social_medias")
+}
+
+model WebsiteInfo {
+  id                 String    @id @default(cuid())
+  createdAt          DateTime  @default(now()) @map("created_at")
+  updatedAt          DateTime  @default(now()) @map("updated_at")
+  deletedAt          DateTime? @map("deleted_at")
+  name               String?
+  phoneNumber        String?   @map("phone_number")
+  email              String?
+  address            String?
+  logo               String?
+  favicon            String?
+  copyright          String?
+  cancellationPolicy String?   @map("cancellation_policy")
+
+  @@map("website_infos")
+}
+
+model Setting {
+  id           String    @id @default(cuid())
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @default(now()) @map("updated_at")
+  deletedAt    DateTime? @map("deleted_at")
+  category     String?
+  label        String?
+  description  String?
+  key          String?   @unique
+  defaultValue String?   @map("default_value")
+
+  userSettings UserSetting[]
+
+  @@map("settings")
+}
+
+model UserSetting {
+  id        String    @id @default(cuid())
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  userId    String?   @map("user_id")
+  user      User?     @relation(fields: [userId], references: [id])
+  settingId String?   @map("setting_id")
+  setting   Setting?  @relation(fields: [settingId], references: [id])
+  value     String?
+
+  @@map("user_settings")
 }

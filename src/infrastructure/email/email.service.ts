@@ -58,7 +58,24 @@ export class EmailService {
         ? options.to.join(', ')
         : options.to;
       this.logger.error(`Error sending email to ${recipient}`, error);
-      throw error;
     }
+  }
+
+  async sendWelcomeEmail(to: string, name: string): Promise<void> {
+    await this.send({
+      to,
+      subject: 'Welcome to Our Platform',
+      template: 'welcome',
+      context: { name },
+    });
+  }
+
+  async sendPasswordResetEmail(to: string, resetUrl: string): Promise<void> {
+    await this.send({
+      to,
+      subject: 'Reset Your Password',
+      template: 'reset-password',
+      context: { resetUrl },
+    });
   }
 }

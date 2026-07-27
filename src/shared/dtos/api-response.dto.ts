@@ -2,7 +2,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class ApiResponseDto<T> {
   @ApiProperty()
-  success: boolean;
+  success!: boolean;
 
   @ApiPropertyOptional()
   message?: string;
@@ -27,21 +27,21 @@ export class ApiResponseDto<T> {
 
 export class PaginatedResponseDto<T> {
   @ApiProperty()
-  success: boolean;
+  success!: boolean;
 
-  data: T[];
-
-  @ApiProperty()
-  total: number;
+  data!: T[];
 
   @ApiProperty()
-  page: number;
+  total!: number;
 
   @ApiProperty()
-  limit: number;
+  page!: number;
 
   @ApiProperty()
-  totalPages: number;
+  limit!: number;
+
+  @ApiProperty()
+  totalPages!: number;
 
   constructor(data: T[], total: number, page: number, limit: number) {
     this.success = true;
